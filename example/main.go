@@ -6,15 +6,15 @@ import (
 	"os"
 	"time"
 	"fmt"
-	
+
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/cloudwatchlogs"
-	"github.com/ejholmes/cloudwatch"
+	"github.com/RedHatInsights/cloudwatch"
 	"github.com/pborman/uuid"
 )
 
 func main() {
-	sess := session.Must(session.NewSession())	
+	sess := session.Must(session.NewSession())
 
 	g := cloudwatch.NewGroup("test", cloudwatchlogs.New(sess))
 
