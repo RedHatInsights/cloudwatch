@@ -1,4 +1,4 @@
-module github.com/Sergey1011010/ejholmes-cloudwatch
+module github.com/RedHatInsights/cloudwatch
 
 go 1.14
 

@@ -2,8 +2,6 @@ github.com/aws/aws-sdk-go v1.30.11 h1:bJoa1QGyyAV4COx1SXpf+LElFVVnOreG6KM0jIxwZq
 github.com/aws/aws-sdk-go v1.30.11/go.mod h1:5zCpMtNQVjRREroY7sYe8lOMRSxkhG6MZveU8YkpAk0=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/ejholmes/cloudwatch v0.0.0-20170420022600-c2bae568a254 h1:p2tOEKRhOh2HgJEZKfiO2YFxpohI7kYQc39MoTbqfw8=
-github.com/ejholmes/cloudwatch v0.0.0-20170420022600-c2bae568a254/go.mod h1:UTDblACfXP8/gUTLoJ1LKJIFXJHr5uHLRDkd6v7NxoE=
 github.com/go-sql-driver/mysql v1.5.0/go.mod h1:DCzpHaOWr8IXmIStZouvnhqoel9Qv2LBy8hT2VhHyBg=
 github.com/google/uuid v1.0.0 h1:b4Gk+7WdP/d3HZH8EJsZpvV7EtDOgaZLtnaNGIu1adA=
 github.com/google/uuid v1.0.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
