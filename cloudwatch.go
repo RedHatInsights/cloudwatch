@@ -5,6 +5,7 @@ import (
 	"io"
 	"time"
 
+	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/service/cloudwatchlogs"
 )
@@ -49,17 +50,20 @@ func (g *Group) existing(stream string) (io.Writer, error) {
 	result, err := g.client.DescribeLogStreams(&cloudwatchlogs.DescribeLogStreamsInput{
 		LogGroupName:        &g.group,
 		LogStreamNamePrefix: &stream,
+		OrderBy:             aws.String("LogStreamName"),
+		Descending:          aws.Bool(false),
 	})
-
 	if err != nil {
 		return nil, err
 	}
 
-	if len(result.LogStreams) != 1 {
+	if len(result.LogStreams) == 0 {
 		return nil, errors.New("Log stream not found " + stream)
 	}
 
+	// since values are sorted the stream with exact match will be first
 	logStream := result.LogStreams[0]
+
 	return NewWriterWithToken(g.group, stream, logStream.UploadSequenceToken, g.client), nil
 }
 
@@ -73,7 +77,6 @@ func (g *Group) Create(stream string) (io.Writer, error) {
 			if aerr.Code() != cloudwatchlogs.ErrCodeResourceAlreadyExistsException {
 				return nil, err
 			}
-
 			return g.existing(stream)
 		}
 	}
