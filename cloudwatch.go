@@ -17,6 +17,9 @@ const (
 
 	// The maximum rate of a PutLogEvents request is 5 requests per second per log stream.
 	writeThrottle = time.Second / 5
+
+	// maximum message size is 1048576, but we have some metadata
+	maximumBatchSize = 1048576 / 2
 )
 
 // now is a function that returns the current time.Time. It's a variable so that

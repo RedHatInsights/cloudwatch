@@ -62,7 +62,7 @@ func NewWriterWithToken(group, stream string, sequenceToken *string, client *clo
 	return w
 }
 
-// Write takes b, and creates cloudwatch log events for each individual line.
+// Write takes b, and creates CloudWatch log events for each individual line.
 // If Flush returns an error, subsequent calls to Write will fail.
 func (w *Writer) Write(b []byte) (int, error) {
 	if w.closed {
@@ -76,7 +76,7 @@ func (w *Writer) Write(b []byte) (int, error) {
 	return w.buffer(b)
 }
 
-// starts continously flushing the buffered events.
+// starts continuously flushing the buffered events.
 func (w *Writer) start() error {
 	for {
 		// Exit if the stream is closed.
@@ -85,6 +85,7 @@ func (w *Writer) start() error {
 		}
 
 		<-w.throttle
+
 		if err := w.Flush(); err != nil {
 			return err
 		}
@@ -166,6 +167,13 @@ func (w *Writer) buffer(b []byte) (int, error) {
 			Timestamp: aws.Int64(now().UnixNano() / 1000000),
 		})
 
+		if w.events.eventsSize > maximumBatchSize {
+			err := w.Flush()
+			if err != nil {
+				return n, err
+			}
+		}
+
 		n += len(b)
 	}
 
@@ -177,6 +185,8 @@ func (w *Writer) buffer(b []byte) (int, error) {
 type eventsBuffer struct {
 	sync.Mutex
 	events []*cloudwatchlogs.InputLogEvent
+	// size of messages in bytes
+	eventsSize uint64
 }
 
 func (b *eventsBuffer) add(event *cloudwatchlogs.InputLogEvent) {
@@ -184,6 +194,7 @@ func (b *eventsBuffer) add(event *cloudwatchlogs.InputLogEvent) {
 	defer b.Unlock()
 
 	b.events = append(b.events, event)
+	b.eventsSize += uint64(len(*event.Message))
 }
 
 func (b *eventsBuffer) drain() []*cloudwatchlogs.InputLogEvent {
@@ -192,5 +203,6 @@ func (b *eventsBuffer) drain() []*cloudwatchlogs.InputLogEvent {
 
 	events := b.events[:]
 	b.events = nil
+	b.eventsSize = 0
 	return events
 }
