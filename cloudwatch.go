@@ -54,7 +54,7 @@ func (g *Group) existing(stream string) (io.Writer, error) {
 		LogGroupName:        &g.group,
 		LogStreamNamePrefix: &stream,
 		OrderBy:             aws.String("LogStreamName"),
-		Descending:          aws.Bool(false),
+		Descending:          aws.Bool(true),
 	})
 	if err != nil {
 		return nil, err
