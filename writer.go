@@ -138,6 +138,13 @@ func (w *Writer) flush(events []*cloudwatchlogs.InputLogEvent) error {
 	return nil
 }
 
+// implements Zap's WriteSyncer
+// https://godoc.org/go.uber.org/zap/zapcore#WriteSyncer
+// makes it possible to use the writer as Zap's backend directly
+func (w *Writer) Sync() error {
+	return w.Flush()
+}
+
 // buffer splits up b into individual log events and inserts them into the
 // buffer.
 func (w *Writer) buffer(b []byte) (int, error) {
